@@ -1,6 +1,7 @@
 # print("hello world")
 from flask import Flask, render_template
 import pymysql
+import os
 
 app = Flask(__name__)
 
@@ -47,9 +48,9 @@ connection = pymysql.connect(
   charset="utf8mb4",
   connect_timeout=timeout,
   cursorclass=pymysql.cursors.DictCursor,
-  db="defaultdb",
-  host="hobnob-careers-website-hobnob-careers-website.e.aivencloud.com",
-  password="AVNS_b2OTY92KOIjJRKQIVQQ",
+  db=os.environ['db_name'],
+  host=os.environ['host_name'],
+  password=os.environ['password'],
   read_timeout=timeout,
   port=26582,
   user="avnadmin",
@@ -80,7 +81,11 @@ def hello_world():
   return render_template('home.html',
                         jobs = result)
 
-print(__name__)
+@app.route("/jobs")
+def list_jobs():
+  jobs = result
+  return jobs
+
 if __name__ == "__main__":
   # print("i am inside the if block")
   app.run(host = '0.0.0.0', debug = True)
